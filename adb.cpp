@@ -193,7 +193,9 @@ void adb_trace_init() {
     }
 
 #if !ADB_HOST
-    start_device_log();
+    // MultiROM: disable, it crashes due to property_get call because
+    // the property system isn't set-up while in MultiROM
+    //start_device_log();
 #endif
 }
 

@@ -110,6 +110,10 @@ static void drop_capabilities_bounding_set_if_needed() {
 
 static bool should_drop_privileges() {
 #if defined(ALLOW_ADBD_ROOT)
+//nkk71: MultiROM doesn't setup property service at boot
+#ifdef DONT_DROP_ROOT
+    return 0;
+#else
     char value[PROPERTY_VALUE_MAX];
 
     // The emulator is never secure, so don't drop privileges there.
@@ -153,6 +157,7 @@ static bool should_drop_privileges() {
     }
 
     return drop;
+#endif /* DONT_DROP_ROOT */
 #else
     return true; // "adb root" not allowed, always drop privileges.
 #endif /* ALLOW_ADBD_ROOT */
@@ -204,8 +209,11 @@ void start_logging(void)
 int adb_main(int is_daemon, int server_port)
 {
 #if !ADB_HOST
+    // MultiROM: disable, property_get fails in MultiROM environment
+/*
     int port;
     char value[PROPERTY_VALUE_MAX];
+*/
 
     umask(000);
 #endif
@@ -306,6 +314,8 @@ int adb_main(int is_daemon, int server_port)
         usb = 1;
     }
 
+    // MultiROM: disable, property_get fails in MultiROM environment
+    /*
     // If one of these properties is set, also listen on that port
     // If one of the properties isn't set and we couldn't listen on usb,
     // listen on the default port.
@@ -321,6 +331,7 @@ int adb_main(int is_daemon, int server_port)
         // listen on default port
         local_init(DEFAULT_ADB_LOCAL_TRANSPORT_PORT);
     }
+    */
 
     D("adb_main(): pre init_jdwp()\n");
     init_jdwp();
