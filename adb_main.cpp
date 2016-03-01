@@ -15,6 +15,8 @@
  */
 
 #define TRACE_TAG TRACE_ADB
+// MultiROM
+#define DONT_DROP_ROOT
 
 #include "sysdeps.h"
 
